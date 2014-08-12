@@ -1,20 +1,121 @@
 # Reproducible Research: Peer Assessment 1
 
+Fisrt we need to read the 'activity.zip' file (that contains an 'activity.csv' file) that it's supposed we have into our working directory, and store it at a variable (data, in this case).
 
 ## Loading and preprocessing the data
-
+We are going to specify that want the strings columns as a factor.
+```{r}
+data <- read.csv(unz("activity.zip", "activity.csv"))
+```
 
 
 ## What is mean total number of steps taken per day?
+###1 Make a histogram of the total number of steps taken each day
 
+Now we can use that the column 'date' was taken as a factor, in order to use it into the 'tapply' function.
+```{r}
+tot_num_steps <- tapply(data$steps, data$date, sum)
+```
+And now we can make the requested plot.  
+```{r}
+hist(tot_num_steps)
+```
+MIRAR EXACTAMENTE ESTO  
+mean_tot_steps_day <- lapply(tot_num_steps,mean)
 
+###2 Calculate and report the mean and median total number of steps taken per day  
+
+Reporting 'mean' and 'median'.  
+
+```{r}
+mean(tot_num_steps, na.rm=TRUE)
+```
+```{r}
+median(tot_num_steps, na.rm=TRUE)
+```
 
 ## What is the average daily activity pattern?
+###1 Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)  
 
+We must make 'interval' column as a factor.  
+```{r}
+data$interval <- as.factor(data$interval)
+```
+And now we can use again 'tapply' function as above, but just with the new factor, and removing NA values.
+And then, make the requested plot.  
+```{r}
 
+av_steps_interval <- tapply(data$steps, data$interval, mean, na.rm=TRUE)
+plot(levels(data$interval), av_steps_interval, type="l")
+```
+
+###2 Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?  
+
+This is not the best way to get this value, but just it works...  
+We can make a new data frame (named 'my_tabla') with 2 columns: namely, intervals levels, and means of each day.  
+Then we can order by 'means' column, and then show the first element of 'intervals' column.  
+```{r}
+my_tabla <- data.frame(intervals=levels(data$interval),mean_steps=av_steps_interval, stringsAsFactors=FALSE)
+my_tabla <- my_tabla[order(my_tabla$mean_steps, decreasing=TRUE),]
+my_tabla[1,1]
+```
+Result shows that '835' interval is the maximum number of steps.  
 
 ## Imputing missing values
+###1 Calculate and report the total number of missing values in the dataset (i.e. the total number of rows with NAs) 
+
+```{r}
+ok <- complete.cases(data)
+ok_tot <- ok[ok==TRUE]
+length(ok_tot)
+```
+
+###2  Devise a strategy for filling in all of the missing values in the dataset. The strategy does not need to be sophisticated. For example, you could use the mean/median for that day, or the mean for that 5-minute interval, etc.  
+
+A non-sophisticated way to replace NA values, I think, is replacing them with the mean of the entire steps column. I know there are better ways to solve it... this is one. 
+
+###3 Create a new dataset that is equal to the original dataset but with the missing data filled in.  
+
+Overwritting original 'data'.  
+
+```{r}
+data$steps[is.na(data$steps)] <- mean(data$steps, na.rm = TRUE)
+```
+
+###4 Make a histogram of the total number of steps taken each day and Calculate and report the **mean** and **median** total number of steps taken per day. Do these values differ from the estimates from the first part of the assignment? What is the impact of imputing missing data on the estimates of the total daily number of steps?
+
+```{r}
+tot_num_steps <- tapply(data$steps, data$date, sum)
+hist(tot_num_steps)
+```
+
+Reporting new 'mean' and 'median'.  
+
+```{r}
+mean(tot_num_steps, na.rm=TRUE)
+```
+```{r}
+median(tot_num_steps, na.rm=TRUE)
+```
+
+As we can see, ***there's not difference*** between the first part of the assignment and this last part. The mean and the median are almost exactly ***the same***.  
+So, the impact of imputing missing data is null.  
+
+## Are there differences in activity patterns between weekdays and weekends?  
+
+We can turn string 'date' column into Date class with as.Date function.  
+```{r}
+data$date <- as.Date(data$date)
+```
+EN VEZ DE TODO ESTO MIRAR POSIXlt
+
+Now, we can install 'timeDate' package [at CRAN here](http://cran.rstudio.com/bin/windows/contrib/3.1/timeDate_3010.98.zip)  
+or  
+```{r}
+install.packages("timeDate")
+library("timeDate", lib.loc="~/R/win-library/3.1")
+```
+
+Now we can force 'date' column to a new class provided in this package; with as.timeDate function. Then we can use isWeekday function to find out the requested question.
 
 
-
-## Are there differences in activity patterns between weekdays and weekends?
