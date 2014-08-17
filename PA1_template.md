@@ -43,7 +43,7 @@ hist(tot_num_steps, main="Histogram of total number of steps per day",
      xlab="Total number of steps in a day")
 ```
 
-![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-2.png) 
+![plot of chunk Hist_StepsDay_1](figure/Hist_StepsDay_1.png) 
 
 ###2 Calculate and report the mean and median total number of steps taken per day  
 
@@ -82,7 +82,7 @@ plot(levels(data$interval), av_steps_interval, type="l",  main="Average number o
      ylab="Average number of steps")
 ```
 
-![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6.png) 
+![plot of chunk Avg_Steps_avg_allDays](figure/Avg_Steps_avg_allDays.png) 
 
 ###2 Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?  
 
@@ -139,7 +139,7 @@ tot_num_steps <- tapply(data$steps, data$date, sum)
 hist(tot_num_steps)
 ```
 
-![plot of chunk unnamed-chunk-10](figure/unnamed-chunk-10.png) 
+![plot of chunk Hist_StepsDay_2](figure/Hist_StepsDay_2.png) 
 
 Reporting new 'mean' and 'median'. (Notice that remove NAs is not needed).   
 
@@ -195,7 +195,7 @@ library("lattice", lib.loc="C:/Program Files/R/R-3.1.1/library")
 xyplot(steps ~ interval | wday_wend, data=table_av_steps_interval_daytype, layout=c(1,2), type="l")
 ```
 
-![plot of chunk unnamed-chunk-17](figure/unnamed-chunk-17.png) 
+![plot of chunk Interval_Steps_TypeDay](figure/Interval_Steps_TypeDay.png) 
 
 Changing NAs by the mean of total days (not by the mean of this interval, or the mean of that day), makes the new mean and median slight deviation, and the differences in activity patterns between weekdays and weekends, are not very strong.
 

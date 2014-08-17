@@ -35,7 +35,7 @@ data <- read.csv(f_path, as.is=TRUE)
 ###1 Make a histogram of the total number of steps taken each day
 
 Now we can use that the column 'date' that was taken as a factor, in order to use it into the 'tapply' function. And then we can make the requested plot.  
-```{r}
+```{r Hist_StepsDay_1}
 tot_num_steps <- tapply(data$steps, data$date, sum)
 hist(tot_num_steps, main="Histogram of total number of steps per day", 
      xlab="Total number of steps in a day")
@@ -60,7 +60,7 @@ data <- transform(data, interval = factor(interval))
 ```
 And now we can use again 'tapply' function as above, but just with the new factor, and removing NA values.
 And then, make the requested plot.  
-```{r}
+```{r Avg_Steps_avg_allDays}
 av_steps_interval <- tapply(data$steps, data$interval, mean, na.rm=TRUE)
 plot(levels(data$interval), av_steps_interval, type="l",  main="Average number of steps averaged over all days", xlab="Interval", 
      ylab="Average number of steps")
@@ -104,7 +104,7 @@ data$steps[is.na(data$steps)] <- as.integer(mean(data$steps, na.rm = TRUE))
 
 ###4 Make a histogram of the total number of steps taken each day and Calculate and report the **mean** and **median** total number of steps taken per day. Do these values differ from the estimates from the first part of the assignment? What is the impact of imputing missing data on the estimates of the total daily number of steps?
 
-```{r}
+```{r Hist_StepsDay_2}
 tot_num_steps <- tapply(data$steps, data$date, sum)
 hist(tot_num_steps)
 ```
@@ -143,7 +143,7 @@ table_av_steps_interval_daytype <- aggregate(steps ~ interval+wday_wend, data, m
 
 
 Now we can make the plot. Lattice package will be used.  
-```{r}
+```{r Interval_Steps_TypeDay}
 library("lattice", lib.loc="C:/Program Files/R/R-3.1.1/library")
 xyplot(steps ~ interval | wday_wend, data=table_av_steps_interval_daytype, layout=c(1,2), type="l")
 ```
