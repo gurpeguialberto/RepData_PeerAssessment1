@@ -1,3 +1,8 @@
+---
+output:
+  html_document:
+    keep_md: yes
+---
 # Reproducible Research: Peer Assessment 1
 
 See README.md 
@@ -17,7 +22,7 @@ tmp_fl = tempfile(tmpdir=tmp_dir, fileext=".zip")
 download.file(f_url, tmp_fl, method="auto")
 # get the name of the first file in the zip archive
 f_name = unzip(tmp_fl, list=TRUE)$Name[1]
-# unzip the file to the temporary directory
+# unzip the file to the temporary diknitrectory
 unzip(tmp_fl, files=f_name, exdir=tmp_dir, overwrite=TRUE)
 # fpath is the full path to the extracted file
 f_path = file.path(tmp_dir, f_name)
